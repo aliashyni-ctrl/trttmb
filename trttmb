@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как назвать? — Конструктор тортов</title>
+    <style>
+        :root {
+            --bg: #fdfaf5;
+            --text: #3d2c2a;
+            --accent: #e8784a;
+            --accent2: #c8755a;
+            --gold: #c9a96e;
+            --cream: #fff8f0;
+            --card: #ffffff;
+            --border: #e8ddd0;
+            --shadow: 0 4px 24px rgba(0, 0, 0, .07);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, .10);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(.4, 0, .2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 248, 240, .92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: .95rem;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+        .nav-links a:hover {
+            background: #f5ede2;
+            color: var(--accent);
+        }
+        .nav-cart {
+            position: relative;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: .95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-cart:hover {
+            background: #d4693d;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(232, 120, 74, .35);
+        }
+        .cart-badge {
+            background: #fff;
+            color: var(--accent);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: .75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            z-index: 101;
+        }
+        .burger span {
+            width: 26px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+            padding: 40px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, #fff8f0 0%, #fdf5ed 40%, #faf1e8 100%);
+        }
+        .hero-text {
+            max-width: 600px;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 900;
+            line-height: 1.15;
+            color: #2c1a14;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+        .hero-sub {
+            font-size: 1.15rem;
+            color: #6b554b;
+            margin-bottom: 28px;
+        }
+        .btn-giant {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            box-shadow: 0 8px 30px rgba(232, 120, 74, .4);
+            letter-spacing: .3px;
+        }
+        .btn-giant:hover {
+            background: #d4693d;
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px rgba(232, 120, 74, .5);
+        }
+        .micro-adv {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            font-size: .85rem;
+            color: #7a655a;
+            font-weight: 500;
+        }
+        .micro-adv span {
+            background: #fff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+        .section {
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #2c1a14;
+        }
+        .section-sub {
+            text-align: center;
+            color: #7a655a;
+            margin-bottom: 48px;
+            font-size: 1.1rem;
+        }
+        .steps-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .step-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            flex: 1 1 200px;
+            max-width: 260px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+        .step-card p {
+            font-size: .9rem;
+            color: #7a655a;
+        }
+        .carousel {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 16px 0;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .idea-card {
+            min-width: 200px;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: var(--transition);
+            flex-shrink: 0;
+            padding: 32px 16px;
+            text-align: center;
+            border: 2px solid var(--border);
+        }
+        .idea-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .idea-card h4 {
+            font-size: 1rem;
+        }
+        .idea-card .price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-top: 8px;
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        .why-item {
+            background: #fff;
+            padding: 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .constructor-section {
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            margin: 40px auto;
+            max-width: 1100px;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        .constructor-left {
+            flex: 1 1 380px;
+            padding: 28px;
+            background: #fdfaf6;
+            border-right: 1px solid var(--border);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .constructor-right {
+            flex: 1 1 300px;
+            padding: 28px;
+            background: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .progress-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .progress-step {
+            flex: 1;
+            min-width: 40px;
+            height: 6px;
+            border-radius: 3px;
+            background: #e0d5c8;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .progress-step.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px rgba(232,120,74,.5);
+        }
+        .progress-step.done {
+            background: #c9a96e;
+        }
+        .option-group {
+            margin-bottom: 16px;
+        }
+        .option-group label {
+            font-weight: 700;
+            font-size: .9rem;
+            display: block;
+            margin-bottom: 6px;
+            color: #3d2c2a;
+        }
+        .option-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .option-pill {
+            padding: 10px 16px;
+            border-radius: 25px;
+            border: 2px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            font-size: .85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .option-pill:hover {
+            border-color: var(--accent);
+            background: #fff5f0;
+        }
+        .option-pill.selected {
+            border-color: var(--accent);
+            background: #fff0ea;
+            color: var(--accent);
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(232,120,74,.2);
+        }
+        .color-picker-wrap {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+        .color-dot.selected {
+            border-color: #333;
+            box-shadow: 0 0 0 4px rgba(0,0,0,.1);
+        }
+        .price-display {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #2c1a14;
+        }
+        .price-display .amount {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        .btn-action {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            transition: var(--transition);
+            margin-top: 8px;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #d4693d;
+        }
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.4);
+            z-index: 200;
+            display: none;
+            justify-content: flex-end;
+        }
+        .cart-overlay.open {
+            display: flex;
+        }
+        .cart-panel {
+            width: 400px;
+            max-width: 90vw;
+            background: #fff;
+            height: 100%;
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: -4px 0 30px rgba(0,0,0,.15);
+            animation: slideIn .3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            float: right;
+        }
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c1a14;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 30px;
+            z-index: 300;
+            font-weight: 600;
+            animation: toastIn .4s ease, toastOut .4s ease 2s forwards;
+            pointer-events: none;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 8px 24px rgba(0,0,0,.1);
+                z-index: 99;
+            }
+            .nav-links.open { display: flex; }
+            .burger { display: flex; }
+            .hero { padding: 40px 16px; min-height: auto; }
+            .constructor-section { flex-direction: column; border-radius: 0; margin: 0 -16px; }
+            .constructor-left, .constructor-right { max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
+            .section { padding: 40px 16px; }
+            .section-title { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-logo" onclick="scrollToSection('hero')">Как назвать?</div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#constructor" onclick="scrollToConstructor()">Конструктор</a></li>
+        <li><a href="#ideas">Готовые идеи</a></li>
+        <li><a href="#why">Почему мы</a></li>
+    </ul>
+    <button class="nav-cart" onclick="toggleCart()" aria-label="Корзина">
+        Корзина <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="burger" onclick="toggleMenu()" aria-label="Меню">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<section class="hero" id="hero">
+    <div class="hero-text">
+        <h1>Создайте торт <span class="highlight">своей мечты</span> за 2 минуты</h1>
+        <p class="hero-sub">Интерактивный конструктор — просто выбирайте ингредиенты и сразу узнавайте цену.</p>
+        <button class="btn-giant" onclick="scrollToConstructor()">Собрать торт</button>
+        <div class="micro-adv">
+            <span>Бесплатная доставка от 3000 ₽</span>
+            <span>Свежие продукты каждый день</span>
+            <span>Работаем 24/7</span>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="how">
+    <h2 class="section-title">Как это работает</h2>
+    <p class="section-sub">Четыре простых шага до идеального десерта</p>
+    <div class="steps-row">
+        <div class="step-card"><h3>1. Выбираете основу</h3><p>Форма, размер, бисквит и ярусы</p></div>
+        <div class="step-card"><h3>2. Добавляете начинки</h3><p>Кремы, конфитюры, хрустящие слои</p></div>
+        <div class="step-card"><h3>3. Декорируете</h3><p>Покрытие, ягоды, топперы и надписи</p></div>
+        <div class="step-card"><h3>4. Оплачиваете и ждёте</h3><p>Доставка к вашему празднику</p></div>
+    </div>
+</section>
+
+<section class="section" id="constructor">
+    <h2 class="section-title">Конструктор тортов</h2>
+    <p class="section-sub">Настройте каждый элемент — и увидите итоговую цену и состав</p>
+    <div class="constructor-section" id="constructorBlock">
+        <div class="constructor-left" id="leftPanel">
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-step active" data-step="0" onclick="setStep(0)"></div>
+                <div class="progress-step" data-step="1" onclick="setStep(1)"></div>
+                <div class="progress-step" data-step="2" onclick="setStep(2)"></div>
+                <div class="progress-step" data-step="3" onclick="setStep(3)"></div>
+                <div class="progress-step" data-step="4" onclick="setStep(4)"></div>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px;font-size:.7rem;color:#8a7568;">
+                <span style="flex:1;text-align:center;">Форма</span><span style="flex:1;text-align:center;">Корж</span><span style="flex:1;text-align:center;">Начинка</span><span style="flex:1;text-align:center;">Покрытие</span><span style="flex:1;text-align:center;">Декор</span>
+            </div>
+            <div id="stepContent"></div>
+        </div>
+        <div class="constructor-right">
+            <h3 style="margin-bottom:4px;">Ваш торт</h3>
+            <p style="font-size:.85rem;color:#7a655a;" id="orderSummary">Ванильный, крем-чиз, ягоды</p>
+            <div class="price-display">Цена: <span class="amount" id="totalPrice">3 200 ₽</span></div>
+            <p style="font-size:.85rem;color:#7a655a;">Вес: <strong id="totalWeight">2.5 кг</strong></p>
+            <button class="btn-action btn-primary" onclick="addToCart()">В корзину</button>
+            <p style="font-size:.7rem;color:#aaa;margin-top:8px;">* Цветопередача может незначительно отличаться.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="ideas">
+    <h2 class="section-title">Готовые идеи</h2>
+    <p class="section-sub">Популярные дизайны — можно заказать как есть или взять за основу</p>
+    <div class="carousel">
+        <div class="idea-card" onclick="loadTemplate('redvelvet')"><h4>Красный бархат</h4><p class="price">от 2 800 ₽</p></div>
+        <div class="idea-card" onclick="loadTemplate('chocolate')"><h4>Шоколадный трюфель</h4><p class="price">от 3 100 ₽</p></div>
+        <div class="idea-card" onclick="loadTemplate('berry')"><h4>Ягодный микс</h4><p class="price">от 3 400 ₽</p></div>
+        <div class="idea-card" onclick="loadTemplate('wedding')"><h4>Свадебный белый</h4><p class="price">от 4 500 ₽</p></div>
+        <div class="idea-card" onclick="loadTemplate('kid')"><h4>Детский праздник</h4><p class="price">от 2 900 ₽</p></div>
+    </div>
+</section>
+
+<section class="section" id="why">
+    <h2 class="section-title">Почему мы</h2>
+    <div class="why-grid">
+        <div class="why-item"><h3>Опыт кондитеров</h3><p>Более 10 лет создаём торты для праздников любого масштаба.</p></div>
+        <div class="why-item"><h3>Натуральные ингредиенты</h3><p>Только свежие продукты без искусственных добавок.</p></div>
+        <div class="why-item"><h3>От 48 часов</h3><p>Минимальный срок изготовления — быстро и качественно.</p></div>
+        <div class="why-item"><h3>Правильная доставка</h3><p>Термосумки и бережная транспортировка.</p></div>
+    </div>
+</section>
+
+<div class="cart-overlay" id="cartOverlay">
+    <div class="cart-panel">
+        <button class="cart-close" onclick="toggleCart()">✕</button>
+        <h2>Корзина</h2>
+        <div id="cartItems"><p style="color:#999;margin-top:20px;">Пока пусто</p></div>
+        <div style="margin-top:16px;font-weight:700;font-size:1.2rem;" id="cartTotal"></div>
+        <button class="btn-action btn-primary" onclick="checkout()" style="margin-top:16px;" id="checkoutBtn" disabled>Оформить заказ</button>
+    </div>
+</div>
+
+<div class="toast" id="toast" style="display:none;"></div>
+
+<script>
+    const state = {
+        step: 0,
+        shape: 'round',
+        tiers: 1,
+        weight: 2.5,
+        sponge: 'vanilla',
+        cream: 'creamcheese',
+        confit: 'cherry',
+        crunch: 'none',
+        coating: 'ganache_coat',
+        coatingColor: '#fdf5ea',
+        decor: ['berries_red', 'macaron_pink'],
+        text: '',
+        cart: [],
+        basePricePerKg: 1200,
+    };
+
+    const sponges = {
+        vanilla: { name: 'Ванильный', priceMod: 0 },
+        chocolate: { name: 'Шоколадный', priceMod: 100 },
+        carrot: { name: 'Морковный', priceMod: 150 },
+        redvelvet: { name: 'Красный бархат', priceMod: 200 },
+        almond: { name: 'Миндальный', priceMod: 250 },
+        glutenfree: { name: 'Безглютеновый', priceMod: 300 },
+    };
+    const creams = {
+        creamcheese: { name: 'Чиз-крем', priceMod: 0 },
+        ganache: { name: 'Шоколадный ганаш', priceMod: 150 },
+        icecream: { name: 'Пломбирный крем', priceMod: 100 },
+        whipped: { name: 'Взбитые сливки', priceMod: 0 },
+    };
+    const confits = {
+        cherry: { name: 'Вишня', priceMod: 0 },
+        mango: { name: 'Манго-маракуйя', priceMod: 200 },
+        caramel: { name: 'Солёная карамель', priceMod: 150 },
+        strawberry: { name: 'Клубника', priceMod: 100 },
+    };
+    const coatings = {
+        ganache_coat: { name: 'Ганаш', priceMod: 0 },
+        mastic: { name: 'Мастика', priceMod: 400 },
+        velour: { name: 'Велюр', priceMod: 500 },
+        mirror: { name: 'Зеркальная глазурь', priceMod: 600 },
+        drip: { name: 'Ганаш с потёками', priceMod: 200 },
+    };
+    const decorItems = {
+        berries_red: { name: 'Ягоды красные', price: 200 },
+        berries_mix: { name: 'Ягодный микс', price: 300 },
+        macaron_pink: { name: 'Макаронс розовые', price: 350 },
+        macaron_gold: { name: 'Макаронс золотые', price: 450 },
+        meringue: { name: 'Безе', price: 250 },
+        flowers: { name: 'Живые цветы', price: 500 },
+        gold_leaf: { name: 'Съедобное золото', price: 600 },
+        sprinkles: { name: 'Посыпка', price: 100 },
+    };
+
+    function calcPrice() {
+        let price = state.weight * state.basePricePerKg;
+        price += sponges[state.sponge]?.priceMod || 0;
+        price += creams[state.cream]?.priceMod || 0;
+        price += confits[state.confit]?.priceMod || 0;
+        price += (coatings[state.coating]?.priceMod || 0);
+        state.decor.forEach(d => { if (decorItems[d]) price += decorItems[d].price; });
+        if (state.tiers > 1) price += (state.tiers - 1) * 1500;
+        if (state.text) price += 300;
+        return Math.round(price / 100) * 100;
+    }
+
+    function updateSummary() {
+        const summary = [
+            sponges[state.sponge]?.name,
+            creams[state.cream]?.name,
+            confits[state.confit]?.name
+        ].filter(Boolean).join(', ');
+        document.getElementById('orderSummary').textContent = summary + (state.decor.length ? ' + декор' : '');
+        document.getElementById('totalPrice').textContent = calcPrice().toLocaleString('ru-RU') + ' ₽';
+        document.getElementById('totalWeight').textContent = state.weight + ' кг';
+    }
+
+    function renderStep() {
+        const container = document.getElementById('stepContent');
+        const steps = ['Форма и размер', 'Коржи (бисквит)', 'Начинки и прослойки', 'Внешнее покрытие', 'Декор'];
+        let html = `<h4 style="margin-bottom:12px;">${steps[state.step]}</h4>`;
+        if (state.step === 0) {
+            html += `<div class="option-group"><label>Форма</label><div class="option-pills">`;
+            ['round','square','heart','oval'].forEach(s => {
+                const names = { round:'Круглая', square:'Квадратная', heart:'Сердце', oval:'Овал' };
+                html += `<span class="option-pill${state.shape===s?' selected':''}" onclick="selectOption('shape','${s}')">${names[s]}</span>`;
+            });
+            html += `</div></div>`;
+            html += `<div class="option-group"><label>Ярусы: ${state.tiers}</label><input type="range" min="1" max="3" value="${state.tiers}" oninput="selectOption('tiers',parseInt(this.value))" style="width:100%;"></div>`;
+            html += `<div class="option-group"><label>Вес: ${state.weight} кг</label><input type="range" min="2" max="4" step="0.5" value="${state.weight}" oninput="selectOption('weight',parseFloat(this.value))" style="width:100%;"></div>`;
+        } else if (state.step === 1) {
+            html += `<div class="option-group"><label>Бисквит</label><div class="option-pills">`;
+            Object.entries(sponges).forEach(([k,v]) => {
+                html += `<span class="option-pill${state.sponge===k?' selected':''}" onclick="selectOption('sponge','${k}')">${v.name}</span>`;
+            });
+            html += `</div></div>`;
+        } else if (state.step === 2) {
+            html += `<div class="option-group"><label>Крем</label><div class="option-pills">`;
+            Object.entries(creams).forEach(([k,v]) => {
+                html += `<span class="option-pill${state.cream===k?' selected':''}" onclick="selectOption('cream','${k}')">${v.name}</span>`;
+            });
+            html += `</div></div>`;
+            html += `<div class="option-group"><label>Конфитюр / Курд</label><div class="option-pills">`;
+            Object.entries(confits).forEach(([k,v]) => {
+                html += `<span class="option-pill${state.confit===k?' selected':''}" onclick="selectOption('confit','${k}')">${v.name}</span>`;
+            });
+            html += `</div></div>`;
+            html += `<div class="option-group"><label>Хрустящий слой</label><div class="option-pills">`;
+            ['none','praline','wafer','nuts'].forEach(c => {
+                const names = { none:'Без', praline:'Пралине', wafer:'Вафельная крошка', nuts:'Орехи' };
+                html += `<span class="option-pill${state.crunch===c?' selected':''}" onclick="selectOption('crunch','${c}')">${names[c]}</span>`;
+            });
+            html += `</div></div>`;
+        } else if (state.step === 3) {
+            html += `<div class="option-group"><label>Покрытие</label><div class="option-pills">`;
+            Object.entries(coatings).forEach(([k,v]) => {
+                html += `<span class="option-pill${state.coating===k?' selected':''}" onclick="selectOption('coating','${k}')">${v.name}</span>`;
+            });
+            html += `</div></div>`;
+            html += `<div class="option-group"><label>Цвет покрытия</label>`;
+            html += `<input type="color" value="${state.coatingColor}" onchange="selectOption('coatingColor',this.value)" style="width:60px;height:36px;border:none;cursor:pointer;border-radius:8px;">`;
+            html += `<div class="color-picker-wrap" style="margin-top:6px;">${['#fdf5ea','#ffffff','#f8d8e0','#e8d5c0','#d4c5b0','#fce4d6','#c9a96e','#e8784a'].map(c => `<div class="color-dot${state.coatingColor===c?' selected':''}" style="background:${c};" onclick="selectOption('coatingColor','${c}')"></div>`).join('')}</div>`;
+        } else if (state.step === 4) {
+            html += `<div class="option-group"><label>Декор (выберите несколько)</label><div class="option-pills">`;
+            Object.entries(decorItems).forEach(([k,v]) => {
+                const sel = state.decor.includes(k);
+                html += `<span class="option-pill${sel?' selected':''}" onclick="toggleDecor('${k}')">${v.name} (+${v.price}₽)</span>`;
+            });
+            html += `</div></div>`;
+            html += `<div class="option-group"><label>Надпись на торт</label><input type="text" placeholder="Например: С Днём Рождения!" value="${state.text}" oninput="selectOption('text',this.value)" maxlength="40" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);font-size:.9rem;"></div>`;
+            html += `<div class="option-group"><label>Свечи</label><div class="option-pills"><span class="option-pill" onclick="selectOption('candles','age')">Цифры возраста</span><span class="option-pill" onclick="selectOption('candles','none')">Без свечей</span></div></div>`;
+        }
+        container.innerHTML = html;
+        document.querySelectorAll('#progressBar .progress-step').forEach((el, i) => {
+            el.classList.remove('active','done');
+            if (i < state.step) el.classList.add('done');
+            if (i === state.step) el.classList.add('active');
+        });
+        updateSummary();
+    }
+
+    function selectOption(key, value) {
+        if (key === 'weight') state.weight = value;
+        else if (key === 'tiers') state.tiers = value;
+        else if (key === 'coatingColor') state.coatingColor = value;
+        else if (key === 'text') state.text = value.slice(0, 40);
+        else if (key === 'shape') state.shape = value;
+        else if (key === 'sponge') state.sponge = value;
+        else if (key === 'cream') state.cream = value;
+        else if (key === 'confit') state.confit = value;
+        else if (key === 'crunch') state.crunch = value;
+        else if (key === 'coating') state.coating = value;
+        else if (key === 'candles') {}
+        renderStep();
+    }
+
+    function toggleDecor(key) {
+        const idx = state.decor.indexOf(key);
+        if (idx >= 0) state.decor.splice(idx, 1);
+        else state.decor.push(key);
+        renderStep();
+    }
+
+    function setStep(n) { state.step = Math.min(4, Math.max(0, n)); renderStep(); }
+
+    function addToCart() {
+        const item = { ...state, price: calcPrice(), id: Date.now(), decor: [...state.decor] };
+        state.cart.push(item);
+        updateCartUI();
+        showToast('Торт добавлен в корзину!');
+    }
+
+    function updateCartUI() {
+        const badge = document.getElementById('cartBadge');
+        const container = document.getElementById('cartItems');
+        const total = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        badge.textContent = state.cart.length;
+        if (!state.cart.length) {
+            container.innerHTML = '<p style="color:#999;margin-top:20px;">Пока пусто</p>';
+            total.textContent = '';
+            checkoutBtn.disabled = true;
+            return;
+        }
+        container.innerHTML = state.cart.map((item, i) => `
+            <div class="cart-item">
+                <div style="flex:1;"><strong>Торт ${sponges[item.sponge]?.name}</strong><p style="font-size:.8rem;color:#7a655a;">${item.weight} кг · ${item.price.toLocaleString('ru-RU')} ₽</p></div>
+                <button onclick="removeFromCart(${i})" style="background:none;border:none;cursor:pointer;font-size:1.2rem;">🗑️</button>
+            </div>`).join('');
+        const totalPrice = state.cart.reduce((s, i) => s + i.price, 0);
+        total.textContent = 'Итого: ' + totalPrice.toLocaleString('ru-RU') + ' ₽';
+        checkoutBtn.disabled = false;
+    }
+
+    function removeFromCart(i) { state.cart.splice(i, 1); updateCartUI(); showToast('Торт удалён из корзины'); }
+    function toggleCart() { document.getElementById('cartOverlay').classList.toggle('open'); }
+    function checkout() {
+        if (!state.cart.length) return;
+        toggleCart();
+        showToast('Заказ оформлен! Номер: #' + Math.floor(Math.random() * 9000 + 1000));
+        state.cart = [];
+        updateCartUI();
+    }
+
+    function loadTemplate(type) {
+        // Базовые значения для всех шаблонов
+        state.shape = 'round';
+        state.tiers = 1;
+        state.weight = 2.5;
+        state.crunch = 'none';
+        state.text = '';
+        state.decor = [];
+
+        if (type === 'redvelvet') {
+            state.sponge = 'redvelvet'; state.cream = 'creamcheese'; state.confit = 'cherry';
+            state.coating = 'ganache_coat'; state.coatingColor = '#fdf5f5';
+            state.decor = ['berries_red', 'macaron_pink'];
+        } else if (type === 'chocolate') {
+            state.sponge = 'chocolate'; state.cream = 'ganache'; state.confit = 'caramel';
+            state.coating = 'drip'; state.coatingColor = '#5d3420';
+            state.decor = ['gold_leaf', 'macaron_gold'];
+        } else if (type === 'berry') {
+            state.sponge = 'vanilla'; state.cream = 'whipped'; state.confit = 'strawberry';
+            state.coating = 'ganache_coat'; state.coatingColor = '#fef5f5';
+            state.decor = ['berries_red', 'berries_mix', 'meringue'];
+        } else if (type === 'wedding') {
+            state.sponge = 'almond'; state.cream = 'creamcheese'; state.confit = 'mango';
+            state.coating = 'mastic'; state.coatingColor = '#ffffff';
+            state.decor = ['flowers', 'gold_leaf'];
+            state.tiers = 3;
+            state.weight = 4;
+        } else if (type === 'kid') {
+            state.sponge = 'vanilla'; state.cream = 'icecream'; state.confit = 'strawberry';
+            state.coating = 'ganache_coat'; state.coatingColor = '#fffbe6';
+            state.decor = ['sprinkles', 'macaron_pink', 'meringue'];
+            state.text = 'С Днём Рождения!';
+        }
+        state.step = 0;
+        renderStep();
+        document.getElementById('constructorBlock').scrollIntoView({ behavior: 'smooth' });
+        showToast('Шаблон загружен в конструктор!');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.style.display = 'block';
+        t.style.animation = 'none';
+        t.offsetHeight;
+        t.style.animation = 'toastIn .4s ease, toastOut .4s ease 2s forwards';
+        setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function scrollToConstructor() { document.getElementById('constructorBlock').scrollIntoView({ behavior: 'smooth' }); }
+    function scrollToSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+    function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+
+    renderStep();
+    updateCartUI();
+
+    document.getElementById('cartOverlay').addEventListener('click', function(e) { if (e.target === this) toggleCart(); });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' && state.step < 4) setStep(state.step + 1);
+        if (e.key === 'ArrowLeft' && state.step > 0) setStep(state.step - 1);
+        if (e.key === 'Escape') document.getElementById('cartOverlay').classList.remove('open');
+    });
+</script>
+</body>
+</html>
